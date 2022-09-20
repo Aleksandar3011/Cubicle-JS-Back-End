@@ -18,5 +18,11 @@
         "name": "Gosho",
         "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61izOzq%2BBAL._SY355_.jpg",
         "difficultyLevel": 6
+    },
+    {
+        "name": "Test",
+        "description": "Test",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rubik%27s_cube.svg/1966px-Rubik%27s_cube.svg.png",
+        "difficultyLevel": "4"
     }
-]       
+]
