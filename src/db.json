@@ -28,13 +28,13 @@
         "name": "Test",
         "description": "Test",
         "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rubik%27s_cube.svg/1966px-Rubik%27s_cube.svg.png",
-        "difficultyLevel": "4"
+        "difficultyLevel": 4
     },
     {
         "id": 5,
         "name": "ASD",
         "description": "ASD",
         "imageUrl": "https://m.media-amazon.com/images/I/61X0g6GveJL.jpg",
-        "difficultyLevel": "6"
+        "difficultyLevel": 6
     }
 ]
