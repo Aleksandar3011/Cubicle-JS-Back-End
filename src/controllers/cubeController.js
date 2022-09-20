@@ -1,31 +1,32 @@
-const router = require('express').Router();
-const fs = require(`fs/promises`);
-const path = require('path');
+const router = require("express").Router();
+const cubeSevice = require("../services/cubeService");
 
-const cubes = require('../db.json');
-
-router.get('/create', (req, res) => {
-    res.render('create')
+router.get("/create", (req, res) => {
+    res.render("create");
 });
 
-router.post('/create', (req, res) => {
+router.post("/create", async (req, res) => {
     const cube = req.body;
-// Validate
-    if(cube.name.trim == ``){
+    // Validate
+    if (cube.name.trim == ``) {
         res.status(400).send("Invalid request");
         return;
     }
-// Save data
-cubes.push(cube)
-fs.writeFile(path.resolve('src', 'db.json'), JSON.stringify(cubes, '', 4), {encoding: "utf-8"})
-    .then(() => {
-        res.redirect('/');
-    })
-    .catch(err => {
-        res.status(400).send(err)
-    });
-// Redirect to home page
+    // Save data
+    try{
+        await cubeSevice.save(cube);
 
+        res.redirect('/');
+    }catch(err){
+        res.status(400).send(err)
+    }
+        
+});
+
+router.get('/details/:id', (req, res) => {
+    const cube = cubeSevice.getOne(req.params.id);
+
+    res.render('details', { cube });
 });
 
 module.exports = router;
