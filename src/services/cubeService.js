@@ -1,5 +1,3 @@
-const path = require("path");
-
 const Cube = require('../models/Cube');
 
 exports.getAll = async (search = ``, fromInput, toInput) => {
