@@ -22,10 +22,10 @@ const cubeSchema = new mongoose.Schema({
     }
 });
 
-cubeSchema.path('imageUrl').validate(function() {
-    return this.name.startWith('http');
-}, 'Image url should be a link');
+// cubeSchema.path('imageUrl').validate(function() {
+//     return this.imageUrl.startWith('http');
+// }, 'Image url should be a link');
 
-const Cobe = mongoose.model('Cube', cubeSchema);
+const Cube = mongoose.model('Cube', cubeSchema);
 
 module.exports = Cube;

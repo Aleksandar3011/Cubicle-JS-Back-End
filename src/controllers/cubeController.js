@@ -14,18 +14,18 @@ router.post("/create", async (req, res) => {
     }
     // Save data
     try{
-        await cubeSevice.save(cube);
+        await cubeSevice.create(cube);
 
         res.redirect('/');
     }catch(err){
+        console.log(err);
         res.status(400).send(err)
     }
         
 });
 
-router.get('/details/:id', (req, res) => {
-    const cube = cubeSevice.getOne(req.params.id);
-
+router.get('/details/:id', async (req, res) => {
+    const cube = await cubeSevice.getOne(req.params.id).lean();
     res.render('details', { cube });
 });
 
