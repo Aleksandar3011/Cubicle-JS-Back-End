@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const cubeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
@@ -13,19 +13,21 @@ const cubeSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
+        validate: {
+            validator: function () {
+                return this.imageUrl.startWith("http");
+            },
+            message: 'Image url should be a link'
+        },
     },
     difficultyLevel: {
         type: Number,
         required: true,
         min: 1,
-        max: 6
-    }
+        max: 6,
+    },
 });
 
-// cubeSchema.path('imageUrl').validate(function() {
-//     return this.imageUrl.startWith('http');
-// }, 'Image url should be a link');
-
-const Cube = mongoose.model('Cube', cubeSchema);
+const Cube = mongoose.model("Cube", cubeSchema);
 
 module.exports = Cube;
