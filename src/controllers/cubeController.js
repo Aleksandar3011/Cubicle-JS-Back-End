@@ -55,7 +55,7 @@ router.get('/:cubeId/edit', isAuth, async (req, res) => {
     if(cube.owner != req.user._id){
         //TODO: add notif...
         return res.redirect('/404');
-    }
+    };
 
     if(!cube){
         return res.redirect('/404')
