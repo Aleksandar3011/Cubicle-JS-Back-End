@@ -27,14 +27,15 @@ router.get('/login', async (req, res) => {
 router.post('/login', async (req, res) => {
 
    let token = await authService.login(req.body);
-   
+
    if(!token){
     //TODO: add notifications
     return res.render('404');
     }
 
+    res.cookie('user', token);
 
-   res.redirect('/');
+    res.redirect('/');
 });
 
 module.exports = router;

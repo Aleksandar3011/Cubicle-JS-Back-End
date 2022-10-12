@@ -1,52 +1,56 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/User');
+const User = require("../models/User");
 
 const saltRounds = 10;
-const secret = 'eprogerihguowebrigweywuirguf';
+const secret = "eprogerihguowebrigweywuirguf";
 
 //REGISTER
-exports.register = async ({username, password, repeatPassword}) => {
-    
+exports.register = async ({ username, password, repeatPassword }) => {
     //TODO: form validation message
-    if(password !== repeatPassword){
+    if (password !== repeatPassword) {
         return false;
     }
-    
+
     const hashedPassowrd = await bcrypt.hash(password, saltRounds);
 
     const createdUser = User.create({
         username,
-        password: hashedPassowrd
+        password: hashedPassowrd,
     });
 
-    return createdUser;  
+    return createdUser;
 };
 
 //LOGIN
-exports.login = async ({username, password}) => {
-   let user = await User.findOne({username});
+exports.login = async ({ username, password }) => {
+    let user = await User.findOne({ username });
 
-   if(!user){
+    if (!user) {
         return;
-   }
+    }
 
-   const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await bcrypt.compare(password, user.password);
 
-   if(!isValid){
+    if (!isValid) {
         return;
-   }
+    }
 
-   const result = new Promise((resolve, reject) => {
-       jwt.sign({_id: user._id, username: user.username}, secret, {expiresIn: '2d'}, (err, decodeToken) => {
-            if(err){
-                return reject(err);
+    const result = new Promise((resolve, reject) => {
+        jwt.sign(
+            { _id: user._id, username: user.username },
+            secret,
+            { expiresIn: "2d" },
+            (err, decodeToken) => {
+                if (err) {
+                    return reject(err);
+                }
+
+                resolve(decodeToken);
             }
+        );
+    });
 
-            resolve(decodeToken);
-       });
-   });
-
-   return result;
+    return result;
 };
