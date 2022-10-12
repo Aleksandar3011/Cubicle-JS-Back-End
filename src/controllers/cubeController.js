@@ -1,13 +1,17 @@
 const router = require("express").Router();
 const cubeService = require("../services/cubeService");
 const accessoryService = require('../services/accessoryService');
+const { isAuth } = require("../middlewares/authMiddleware");
 
-router.get("/create", (req, res) => {
+
+router.get("/create", isAuth, (req, res) => {
     res.render("create");
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", isAuth, async (req, res) => {
     const cube = req.body;
+    cube.owner = req.user._id;
+
     // Validate
     if (cube.name.trim == ``) {
         res.status(400).send("Invalid request");
@@ -43,6 +47,27 @@ router.post('/:cubeId/attach', async (req, res) => {
     await cubeService.attachAcc(req.params.cubeId, accessoryId)
 
     res.redirect(`/cube/details/${req.params.cubeId}`)
+});
+
+router.get('/:cubeId/edit', isAuth, async (req, res) => {
+    const cube = await cubeService.getOne(req.params.cubeId).lean();
+
+    if(cube.owner != req.user._id){
+        //TODO: add notif...
+        return res.redirect('/404');
+    }
+
+    if(!cube){
+        return res.redirect('/404')
+    }
+
+    res.render('cube/edit', { cube });
+});
+
+router.post('/:cubeId/edit', async (req, res) => {
+   const modifiedCube = await cubeService.edit(req.params.cubeId, req.body);
+
+    res.redirect(`/cube/details/${modifiedCube._id}`);
 });
 
 module.exports = router;
